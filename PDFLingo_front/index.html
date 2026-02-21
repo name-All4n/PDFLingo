@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Lingo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>📖 PDF Lingo</h1>
+
+<input type="file" id="pdfInput" accept="application/pdf">
+
+<div id="pdfContainer"></div>
+
+<button id="translateBtn">Traduzir</button>
+
+
+<div id="tooltip"></div>
+
+<!-- pdf.js CDN -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.js"></script>
+
+<script src="script.js"></script>
+</body>
+</html>
