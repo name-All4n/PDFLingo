@@ -1,7 +1,7 @@
 const pdfInput = document.getElementById("pdfInput");
 const pdfContainer = document.getElementById("pdfContainer");
 const translateBtn = document.getElementById("translateBtn");
-const translatedText = document.getElementById("translatedText");
+// const translatedText = document.getElementById("translatedText"); <- Removi pois não existe no HTML
 
 let selectedText = "";
 
@@ -21,52 +21,55 @@ pdfInput.addEventListener("change", async function () {
     pdfContainer.innerHTML = "";
 
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-  const page = await pdf.getPage(pageNum);
+      const page = await pdf.getPage(pageNum);
 
-  const scale = 1.6; // ⚠️ use valor inteiro
-  const viewport = page.getViewport({ scale });
+      const scale = 1.6; 
+      const viewport = page.getViewport({ scale });
 
-  const pageDiv = document.createElement("div");
-  pageDiv.style.position = "relative";
-  pageDiv.style.marginBottom = "20px";
-  pageDiv.style.width = viewport.width + "px";
-  pageDiv.style.height = viewport.height + "px";
+      const pageDiv = document.createElement("div");
+      pageDiv.style.position = "relative";
+      pageDiv.style.marginBottom = "20px";
+      pageDiv.style.width = viewport.width + "px";
+      pageDiv.style.height = viewport.height + "px";
 
-  pdfContainer.appendChild(pageDiv);
+      pdfContainer.appendChild(pageDiv);
 
-  // CANVAS
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
+      // CANVAS
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-  canvas.width = viewport.width;
-  canvas.height = viewport.height;
-  canvas.style.width = viewport.width + "px";
-  canvas.style.height = viewport.height + "px";
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      canvas.style.width = viewport.width + "px";
+      canvas.style.height = viewport.height + "px";
 
-  pageDiv.appendChild(canvas);
+      pageDiv.appendChild(canvas);
 
-  await page.render({
-    canvasContext: ctx,
-    viewport: viewport
-  }).promise;
+      await page.render({
+        canvasContext: ctx,
+        viewport: viewport
+      }).promise;
 
-  // TEXT LAYER
-  const textLayerDiv = document.createElement("div");
-  textLayerDiv.className = "textLayer";
-  textLayerDiv.style.width = viewport.width + "px";
-  textLayerDiv.style.height = viewport.height + "px";
+      // TEXT LAYER
+      const textLayerDiv = document.createElement("div");
+      textLayerDiv.className = "textLayer";
+      textLayerDiv.style.width = viewport.width + "px";
+      textLayerDiv.style.height = viewport.height + "px";
 
-  pageDiv.appendChild(textLayerDiv);
+      pageDiv.appendChild(textLayerDiv);
 
-  const textContent = await page.getTextContent();
+      const textContent = await page.getTextContent();
 
-  await pdfjsLib.renderTextLayer({
-    textContent: textContent,
-    container: textLayerDiv,
-    viewport: viewport,
-    textDivs: []
-  });
-}
+      // CORREÇÃO: Usar textContentSource e aguardar a Promise
+      const textLayerTask = pdfjsLib.renderTextLayer({
+        textContentSource: textContent, 
+        container: textLayerDiv,
+        viewport: viewport,
+        textDivs: []
+      });
+      
+      await textLayerTask.promise;
+    }
   };
 
   reader.readAsArrayBuffer(file);
@@ -110,7 +113,8 @@ translateBtn.addEventListener("click", async function () {
     const range = selection.getRangeAt(0);
     const rect = range.getBoundingClientRect();
 
-    tooltip.innerText = data.phrase;
+    // CORREÇÃO: Mudar de data.phrase para data.content
+    tooltip.innerText = data.content; 
     tooltip.style.display = "block";
     tooltip.style.top = `${rect.bottom + window.scrollY + 8}px`;
     tooltip.style.left = `${rect.left + window.scrollX}px`;
