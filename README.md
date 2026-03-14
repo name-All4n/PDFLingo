@@ -18,7 +18,7 @@ Este projeto surgiu como um experimento técnico e educacional:
 1. O usuário faz o upload de um arquivo PDF.
 2. O sistema renderiza o PDF em um `canvas` e sobrepõe uma camada de texto (`textLayer`) para permitir a seleção.
 3. Ao selecionar um termo em inglês, um botão flutuante de tradução aparece.
-4. O Backend recebe o texto, consulta a API **MyMemory** e retorna a tradução (EN -> PT-BR) em um tooltip posicionado exatamente onde o usuário está lendo.
+4. O Backend recebe o texto, consulta a API do Groq e retorna a tradução (EN -> PT-BR) em um tooltip posicionado exatamente onde o usuário está lendo.
 
 ![Demonstração do PDF Lingo](./assets/print_after_translation.png)
 ![Demonstração do PDF Lingo](./assets/print_before_translation.png)
@@ -31,7 +31,7 @@ Este projeto surgiu como um experimento técnico e educacional:
 * **Java 17+**
 * **Spring Boot**
 * **Jackson** (Processamento de JSON)
-* **HttpClient** (Consumo da API externa MyMemory)
+* **Groq API** (Consumo da API externa da IA Groq)
 * **Java Records** (Para DTOs leves e imutáveis)
 
 ### Frontend
@@ -44,5 +44,4 @@ Este projeto surgiu como um experimento técnico e educacional:
 ## ⚠️ Limitações e Desafios
 Por ser um projeto de estudo e validação de ideia, ele possui limitações conhecidas:
 * **Sobreposição de Texto:** Em alguns PDFs específicos, a camada de seleção pode não se alinhar perfeitamente com as letras visíveis (as "letras ficam em cima"), o que pode dificultar a seleção exata de uma palavra.
-* **Velocidade de Tradução:** A resposta depende do tempo de processamento da API externa gratuita utilizada.
 * **Caráter Experimental:** O projeto prioriza a funcionalidade da tradução e a estrutura do backend em detrimento de uma UI/UX de nível de produção.
